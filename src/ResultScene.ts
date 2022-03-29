@@ -34,6 +34,24 @@ export class ResultScene extends AStage {
 	}
 
 	activate(scene: g.Scene) {
+
+		// 背景を設定
+		const bg = new g.FilledRect(
+			{
+				scene: scene,
+				width: scene.game.width,
+				height: scene.game.height,
+				cssColor: "#FFFFFF",
+			});
+		scene.append(bg);
+		const bg2 = new g.Sprite({
+			scene: scene,
+			src: scene.assets["bg"],
+			width: g.game.width,
+			height: g.game.height,
+		});
+		scene.append(bg2);
+
 		AudioPresenter.instance.stopBGM();
 
 		const r = new g.E({

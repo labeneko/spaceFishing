@@ -28,6 +28,8 @@ import {
 	WATERSURFACE_POS
 } from "./constants";
 import { Timeline } from "@akashic-extension/akashic-timeline";
+import { FieldScore } from "./FieldScore";
+import { Fish } from "./entity/Fish";
 
 export class FieldScene extends AStage {
 	private scene: g.Scene;
@@ -36,6 +38,11 @@ export class FieldScene extends AStage {
 	private fishingRod: FishingRod;
 	private hudManager: HUDManager;
 	private isPlaying: boolean = false;
+	private static readonly FIELDSCORE_POS_X: number = 552;
+	private static readonly FIELDSCORE_POS_Y: number = 0;
+
+	private scoreView: FieldScore;
+	private score: number = 0;
 
 	constructor(_scene: g.Scene) {
 		super();
@@ -48,6 +55,10 @@ export class FieldScene extends AStage {
 	}
 
 	activate(_scene: g.Scene) {
+
+		/**
+		 * 釣り部分を作成
+		 */
 		this.root = new g.E({ scene: _scene });
 		this.scene.append(this.root);
 		createStage(this.root);
@@ -61,6 +72,17 @@ export class FieldScene extends AStage {
 		this.scene.pointDownCapture.add(() => {
 			this.onPointDown();
 		});
+
+		/**
+		 * スコア部分を作成
+		 */
+		const _sv = new FieldScore(_scene);
+		_sv.init(_scene);
+		this.scene.append(_sv.rootEntity);
+		_sv.show(_scene, FieldScene.FIELDSCORE_POS_X, FieldScene.FIELDSCORE_POS_Y);
+		_sv.value = this.score;
+		this.scoreView = _sv;
+
 		this.start()
 	}
 
@@ -92,7 +114,7 @@ export class FieldScene extends AStage {
 		if (!this.isPlaying) return;
 		this.fishingRod.catchUp(() => {
 			const pattern = this.fishingRod.getFishingPattern(this.sea.capturedFishList);
-			this.hudManager.addScore(this.hudManager.calcScore(this.sea.capturedFishList));
+			this.addScore(this.hudManager.calcScore(this.sea.capturedFishList));
 			this.fishingRod.fishing(pattern);
 			this.sea.destroyCapturedFish();
 		});
@@ -113,6 +135,34 @@ export class FieldScene extends AStage {
 		// なぜ
 		//this.scene.destroy();
 	}
+
+	/**
+	 * スコアをセットする
+	 */
+	 setScore(score: number): void {
+		score = Math.min(score, 99999);
+		this.score = score;
+		Global.instance.score = score;
+	}
+
+	/**
+	 * スコアの加算
+	 */
+	 addScore(score: number): void {
+		this.setScore(this.score + score);
+		this.scoreView.value = this.score;
+		OuterParamReceiver.setGlobalScore(this.score);
+	}
+
+	/**
+	 * 釣った魚からスコアを計算
+	 */
+	calcScore(capturedFishList: Fish[]): number {
+		if (capturedFishList.some(fish => fish.score === 0)){
+			return 0;
+		}
+		return capturedFishList.reduce((score, fish) => score += fish.score, 0);
+	}
 }
 
 /**
@@ -130,49 +180,11 @@ export class FieldScene extends AStage {
  * 背景を作成
  */
 function createStage(parent: g.E): void {
-	/**
-	 * 背景 (空と海)
-	 */
-	new g.FilledRect({
+	new g.Sprite({
 		scene: parent.scene,
-		cssColor: BACKGROUND_COLOR,
+		src: parent.scene.assets["bg"],
 		width: g.game.width,
 		height: g.game.height,
-		opacity: BACKGROUND_ALPHA,
-		parent: parent
-	});
-
-	/**
-	 * 島
-	 */
-	new g.FilledRect({
-		scene: parent.scene,
-		cssColor: ISLAND_COLOR,
-		...ISLAND_SIZE,
-		...ISLAND_POS,
-		parent: parent
-	});
-
-	/**
-	 * 草
-	 */
-	new g.FilledRect({
-		scene: parent.scene,
-		cssColor: GRASS_COLOR,
-		...GRASS_SIZE,
-		...GRASS_POS,
-		parent: parent
-	});
-
-	/**
-	 * 水面
-	 */
-	new g.FilledRect({
-		scene: parent.scene,
-		cssColor: WATERSURFACE_COLOR,
-		width: g.game.width,
-		height: 3,
-		...WATERSURFACE_POS,
 		parent: parent
 	});
 }
@@ -181,11 +193,14 @@ function createStage(parent: g.E): void {
  * くまを作成
  */
 function createBear(parent: g.E): void {
-	new g.FilledRect({
+	new g.Sprite({
 		scene: parent.scene,
-		cssColor: BEAR_COLOR,
-		...BEAR_SIZE,
-		...BEAR_POS,
+		src: parent.scene.assets["kaizokusen"],
+		width: 400,
+		scaleX: 0.4,
+		scaleY: 0.4,
+		x: -120,
+		y: -50,
 		parent: parent
 	});
 }
@@ -213,30 +228,11 @@ function createFishingRod(parent: g.E): FishingRod {
  */
 function createHUDManager(parent: g.E): HUDManager {
 	const hudManager = new HUDManager({
-		scoreLabel: createScoreLabel(parent),
 		timeLabel: createTimeLabel(parent),
 		systemLabel: createSystemLabel(parent)
 	});
-	hudManager.setScore(0);
 	hudManager.setTimeLimit(getResources().timeLimit);
 	return hudManager;
-}
-
-/**
- * スコアラベルを作成
- */
-function createScoreLabel(parent: g.E): g.Label {
-	return new g.Label({
-		scene: parent.scene,
-		text: "",
-		font: getResources().font,
-		fontSize: FONT_SIZE,
-		width: g.game.width - 10,
-		y: 5,
-		textAlign: g.TextAlign.Right,
-		widthAutoAdjust: false,
-		parent: parent
-	});
 }
 
 /**

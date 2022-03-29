@@ -1,15 +1,12 @@
 import { SCORE_LABEL_FORMAT, TIMELIMIT, TIME_LABEL_FORMAT } from "./constants";
 import { getResources } from "./Resources";
 import { Fish } from "./entity/Fish";
+import { Global } from "./Global";
 
 /**
  * HUDマネージャークラス生成時のパラメータ
  */
 export interface HUDManagerParameterObject {
-	/**
-	 * スコアラベル
-	 */
-	readonly scoreLabel: g.Label;
 	/**
 	 * 制限時間ラベル
 	 */
@@ -25,13 +22,11 @@ export interface HUDManagerParameterObject {
  * スコア、制限時間、システム文言などの管理を行います
  */
 export class HUDManager {
-	private _scoreLabel: g.Label;
 	private _timeLabel: g.Label;
 	private _systemLabel: g.Label;
 	private _timeLimit: number;
 
 	constructor(param: HUDManagerParameterObject){
-		this._scoreLabel = param.scoreLabel;
 		this._timeLabel = param.timeLabel;
 		this._systemLabel = param.systemLabel;
 		this._timeLimit = TIMELIMIT;
@@ -48,13 +43,12 @@ export class HUDManager {
 		score = Math.min(score, 99999);
 
 		const scoreText = SCORE_LABEL_FORMAT + `${score}`;
-		this._scoreLabel.text = scoreText;
-		this._scoreLabel.invalidate();
 
 		if (!g.game.vars.gameState) {
 			g.game.vars.gameState = {};
 		}
 		g.game.vars.gameState.score = score;
+		Global.instance.score = score;
 	}
 
 	/**

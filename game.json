@@ -1,6 +1,6 @@
 {
-	"width": 800,
-	"height": 450,
+	"width": 640,
+	"height": 360,
 	"fps": 30,
 	"main": "./script/main.js",
 	"assets": {
@@ -94,6 +94,123 @@
 			"width": 1024,
 			"height": 1024,
 			"path": "image/ui_common.png"
+		},
+		"glyph28": {
+			"type": "text",
+			"path": "text/glyph28.json"
+		},
+		"glyph72": {
+			"type": "text",
+			"path": "text/glyph72.json"
+		},
+		"glyph32_yellow": {
+			"type": "text",
+			"path": "text/glyph32_yellow.json"
+		},
+		"jin_000": {
+			"type": "audio",
+			"path": "audio/jin_000",
+			"systemId": "sound",
+			"duration": 2984
+		},
+		"bgm_130": {
+			"type": "audio",
+			"path": "audio/bgm_130",
+			"systemId": "sound",
+			"duration": 11498
+		},
+		"jin_002": {
+			"type": "audio",
+			"path": "audio/jin_002",
+			"systemId": "sound",
+			"duration": 1998
+		},
+		"se_001a": {
+			"type": "audio",
+			"path": "audio/se_001a",
+			"systemId": "sound",
+			"duration": 1237
+		},
+		"se_001c": {
+			"type": "audio",
+			"path": "audio/se_001c",
+			"systemId": "sound",
+			"duration": 770
+		},
+		"se_002c": {
+			"type": "audio",
+			"path": "audio/se_002c",
+			"systemId": "sound",
+			"duration": 1005
+		},
+		"se_003": {
+			"type": "audio",
+			"path": "audio/se_003",
+			"systemId": "sound",
+			"duration": 2171
+		},
+		"se_004": {
+			"type": "audio",
+			"path": "audio/se_004",
+			"systemId": "sound",
+			"duration": 1104
+		},
+		"se_005A_mono": {
+			"type": "audio",
+			"path": "audio/se_005A_mono",
+			"systemId": "sound",
+			"duration": 2030
+		},
+		"se_006B_mono": {
+			"type": "audio",
+			"path": "audio/se_006B_mono",
+			"systemId": "sound",
+			"duration": 1029
+		},
+		"se_100c": {
+			"type": "audio",
+			"path": "audio/se_100c",
+			"systemId": "sound",
+			"duration": 924
+		},
+		"bg_uchu_space": {
+			"type": "image",
+			"path": "image/bg_uchu_space.jpg",
+			"width": 600,
+			"height": 338
+		},
+		"bg": {
+			"type": "image",
+			"path": "image/bg.png",
+			"width": 640,
+			"height": 360
+		},
+		"kaizokusen": {
+			"type": "image",
+			"path": "image/kaizokusen.png",
+			"width": 400,
+			"height": 328
+		},
+		"TitleScene": {
+			"type": "script",
+			"path": "script/TitleScene.js",
+			"global": true
+		},
+		"title": {
+			"type": "image",
+			"path": "image/title.png",
+			"width": 640,
+			"height": 360
+		},
+		"FieldScore": {
+			"type": "script",
+			"path": "script/FieldScore.js",
+			"global": true
+		},
+		"GameTimer": {
+			"type": "script",
+			"path": "script/GameTimer.js",
+			"global": true
 		}
 	},
 	"moduleMainScripts": {
