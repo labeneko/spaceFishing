@@ -34,11 +34,6 @@
 			"path": "script/entity/Sea.js",
 			"global": true
 		},
-		"HUDManager": {
-			"type": "script",
-			"path": "script/HUDManager.js",
-			"global": true
-		},
 		"AStage": {
 			"type": "script",
 			"path": "script/AStage.js",
@@ -210,6 +205,16 @@
 		"GameTimer": {
 			"type": "script",
 			"path": "script/GameTimer.js",
+			"global": true
+		},
+		"ReadyGo": {
+			"type": "script",
+			"path": "script/ReadyGo.js",
+			"global": true
+		},
+		"TimeOver": {
+			"type": "script",
+			"path": "script/TimeOver.js",
 			"global": true
 		}
 	},

@@ -7,7 +7,6 @@ import { GameMainParameterObject } from "./parameterObject";
 interface Resources {
 	readonly font: g.DynamicFont;
 	readonly timeline: Timeline;
-	readonly timeLimit: number;
 }
 
 export function getResources(): Resources {

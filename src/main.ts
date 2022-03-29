@@ -8,7 +8,8 @@ import { TitleScene } from "./TitleScene";
 
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({game: g.game, assetIds: [
-		"ui_common", "jin_000", "glyph28", "glyph72", "glyph32_yellow", "bg", "kaizokusen", "bgm_130", "se_002c", "title"
+		"ui_common", "jin_000", "glyph28", "glyph72", "glyph32_yellow", "bg", "kaizokusen",
+		"bgm_130", "se_002c", "title", "se_005A_mono", "se_006B_mono"
 	]});
 	Global.init();
 	
@@ -16,7 +17,6 @@ function main(param: g.GameMainParameterObject): void {
 	OuterParamReceiver.paramSetting();
 
 	scene.loaded.add(() => {
-		console.log(scene.game)
 		AudioPresenter.initialize(scene);
 		NumberFont.instance.initialize(scene);
 

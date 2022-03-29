@@ -4,7 +4,6 @@ import { AStage } from "./AStage";
 import { OuterParamReceiver } from "./OuterParamReceiver";
 import { Util } from "./Util";
 import { FishingRod } from "./entity/FishingRod";
-import { HUDManager } from "./HUDManager";
 import { Sea } from "./entity/Sea";
 import { getResources, setResources } from "./Resources";
 
@@ -30,19 +29,29 @@ import {
 import { Timeline } from "@akashic-extension/akashic-timeline";
 import { FieldScore } from "./FieldScore";
 import { Fish } from "./entity/Fish";
+import { GameTimer } from "./GameTimer";
+import { ReadyGo } from "./ReadyGo";
+import { TimeOver } from "./TimeOver";
 
 export class FieldScene extends AStage {
 	private scene: g.Scene;
 	private root: g.E;
 	private sea: Sea;
 	private fishingRod: FishingRod;
-	private hudManager: HUDManager;
 	private isPlaying: boolean = false;
+	private static readonly TIMER_MERGIN: number = 22;
+	private static readonly TIMER_MAX: number = 20;
 	private static readonly FIELDSCORE_POS_X: number = 552;
 	private static readonly FIELDSCORE_POS_Y: number = 0;
+	private static readonly GAMETIMER_POS_X: number = 82;
+	private static readonly GAMETIMER_POS_Y: number = 4;
 
+	private timer: GameTimer;
+	
 	private scoreView: FieldScore;
 	private score: number = 0;
+
+	private readyGo: ReadyGo = null;
 
 	constructor(_scene: g.Scene) {
 		super();
@@ -50,7 +59,6 @@ export class FieldScene extends AStage {
 		setResources({
 			timeline: new Timeline(_scene),
 			font: createFont(),
-			timeLimit: 10
 		});
 	}
 
@@ -65,7 +73,6 @@ export class FieldScene extends AStage {
 		createBear(this.root);
 		this.sea = createSea(this.root);
 		this.fishingRod = createFishingRod(this.root);
-		this.hudManager = createHUDManager(this.root);
 		this.scene.update.add(() => {
 			this.step();
 		});
@@ -83,14 +90,54 @@ export class FieldScene extends AStage {
 		_sv.value = this.score;
 		this.scoreView = _sv;
 
+		/**
+		 * タイマー部分を作成
+		 */
+		let gt = Global.instance.totalTimeLimit - FieldScene.TIMER_MERGIN;
+		if (FieldScene.TIMER_MAX < gt) {
+			gt = FieldScene.TIMER_MAX;
+		}
+		const t = new GameTimer(_scene);
+		t.show(
+			FieldScene.GAMETIMER_POS_X,
+			FieldScene.GAMETIMER_POS_Y,
+			gt
+		);
+		this.scene.append(t.rootEntity);
+		this.timer = t;
+
+		const _readygo = new ReadyGo(_scene);
+		this.readyGo = _readygo;
+		this.scene.append(_readygo.rootEntity);
+		_readygo.show().finishCallback.push(this.gameStartInit.bind(this));
+	}
+
+	gameStartInit(): void {
+		const t = this.timer;
 		this.start()
+		t.start()
+			.finishCallback.push(
+				() => {
+					if (!Global.instance.DEBUG) {
+						const _eff = new TimeOver(this.scene);
+
+						this.scene.append(_eff.rootEntity);
+						_eff.show(250, 500).finishCallback.push(
+							() => {
+								this.finish();
+						});
+					}
+				}
+			);
+
+		AudioPresenter.instance.playBGM("bgm_130");
 	}
 
 	/**
 	 * ゲームを開始する
 	 */
 	start(): void {
-		this.hudManager.startCountdown(() => this._startGame());
+		this._startGame();
 	}
 
 	/**
@@ -99,12 +146,14 @@ export class FieldScene extends AStage {
 	step(): void {
 		if (!this.isPlaying) return;
 		this.sea.checkFishOnHook(this.fishingRod);
-		this.hudManager.updateTime();
-		if (this.hudManager.getNowTime() <= 0) {
-			// ゲーム終了
-			this.isPlaying = false;
-			this.finishStage();
-		}
+	}
+
+	/**
+	 * ゲーム終了
+	 */
+	finish(): void {
+		this.isPlaying = false;
+		this.finishStage();
 	}
 
 	/**
@@ -114,7 +163,7 @@ export class FieldScene extends AStage {
 		if (!this.isPlaying) return;
 		this.fishingRod.catchUp(() => {
 			const pattern = this.fishingRod.getFishingPattern(this.sea.capturedFishList);
-			this.addScore(this.hudManager.calcScore(this.sea.capturedFishList));
+			this.addScore(this.calcScore(this.sea.capturedFishList));
 			this.fishingRod.fishing(pattern);
 			this.sea.destroyCapturedFish();
 		});
@@ -221,52 +270,6 @@ function createFishingRod(parent: g.E): FishingRod {
 		createMissLabel(parent);
 	});
 	return fishingRod;
-}
-
-/**
- * HUDマネージャーを作成
- */
-function createHUDManager(parent: g.E): HUDManager {
-	const hudManager = new HUDManager({
-		timeLabel: createTimeLabel(parent),
-		systemLabel: createSystemLabel(parent)
-	});
-	hudManager.setTimeLimit(getResources().timeLimit);
-	return hudManager;
-}
-
-/**
- * 制限時間ラベルを作成
- */
-function createTimeLabel(parent: g.E): g.Label {
-	return new g.Label({
-		scene: parent.scene,
-		text: "",
-		font: getResources().font,
-		fontSize: FONT_SIZE,
-		width: g.game.width - 220,
-		y: 5,
-		textAlign: g.TextAlign.Right,
-		widthAutoAdjust: false,
-		parent: parent
-	});
-}
-
-/**
- *  システムラベルを作成
- */
-function createSystemLabel(parent: g.E): g.Label {
-	return new g.Label({
-		scene: parent.scene,
-		text: "3",
-		font: getResources().font,
-		fontSize: FONT_SIZE * 2,
-		x: g.game.width / 2,
-		y: g.game.height / 2,
-		anchorX: 0.5,
-		anchorY: 0.5,
-		parent: parent
-	});
 }
 
 /**

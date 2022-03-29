@@ -3,6 +3,12 @@
 つりっくまのような制限時間内に魚を釣るゲームのテンプレートになります。
 改造することでオリジナルのゲームが作れます。
 
+# github actionsへの出力
+
+```
+akashic export html --magnify --minify --bundle --output docs/game
+```
+
 ## 実行方法
 
 以下のコマンドで実行できます。
