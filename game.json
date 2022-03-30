@@ -234,6 +234,12 @@
 			"path": "image/moon.png",
 			"width": 200,
 			"height": 200
+		},
+		"kurage": {
+			"type": "image",
+			"path": "image/kurage.png",
+			"width": 400,
+			"height": 381
 		}
 	},
 	"moduleMainScripts": {
