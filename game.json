@@ -111,7 +111,7 @@
 		"bgm_130": {
 			"type": "audio",
 			"path": "audio/bgm_130",
-			"systemId": "sound",
+			"systemId": "music",
 			"duration": 11498
 		},
 		"jin_002": {
@@ -228,6 +228,12 @@
 			"path": "image/eisei.png",
 			"width": 400,
 			"height": 382
+		},
+		"moon": {
+			"type": "image",
+			"path": "image/moon.png",
+			"width": 200,
+			"height": 200
 		}
 	},
 	"moduleMainScripts": {
