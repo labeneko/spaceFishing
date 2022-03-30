@@ -222,6 +222,12 @@
 			"path": "image/rocket.png",
 			"width": 479,
 			"height": 296
+		},
+		"eisei": {
+			"type": "image",
+			"path": "image/eisei.png",
+			"width": 400,
+			"height": 382
 		}
 	},
 	"moduleMainScripts": {

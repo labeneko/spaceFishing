@@ -35,6 +35,7 @@ interface FishInfo {
  */
 const fishInfoList: FishInfo[] = [
 	{name: "ロケット", resourceName: "rocket", width: 100, height: 60, srcWidth: 479, srcHeight: 296, score: 1},
+	{name: "衛星", resourceName: "eisei", width: 100, height: 95, srcWidth: 400, srcHeight: 382, score: 10},
 ];
 
 /**
