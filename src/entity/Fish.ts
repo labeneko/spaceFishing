@@ -19,6 +19,15 @@ export interface FishParameterObject {
 	 * 魚のリソース名(文字列)
 	 */
 	 readonly resourceName: string;
+
+	/**
+	 * 魚の画像幅
+	 */
+	 readonly width: number;
+	 readonly height: number;
+	 readonly srcWidth: number;
+	 readonly srcHeight: number;
+
 	/**
 	 * 魚を釣ったときのスコア
 	 */
@@ -141,12 +150,21 @@ export class Fish {
 	}
 
 	/**
-	 * 魚ラベル作成
+	 * 魚作成
 	 */
 	private _createSprite(param: FishParameterObject): g.Sprite {
+		let angle = 0;
+		if (param.swimmingStyle.pattern == "right_to_left") {
+			angle = 180;
+		}
 		return new g.Sprite({
 			scene: param.parent.scene,
 			src: param.parent.scene.assets[param.resourceName],
+			width: param.width,
+			height: param.height,
+			srcWidth: param.srcWidth,
+			srcHeight: param.srcHeight,
+			angle: angle,
 			...this._initialPos(param)
 		});
 	}

@@ -17,6 +17,14 @@ interface FishInfo {
 	readonly resourceName: string
 
 	/**
+	 * 画像描画サイズ
+	 */
+	 readonly width: number
+	 readonly height: number
+	 readonly srcWidth: number
+	 readonly srcHeight: number
+
+	/**
 	 * 獲得できるスコア
 	 */
 	readonly score: number;
@@ -26,7 +34,7 @@ interface FishInfo {
  * 出現する魚の種類
  */
 const fishInfoList: FishInfo[] = [
-	{name: "ロケット", resourceName: "rocket", score: 1},
+	{name: "ロケット", resourceName: "rocket", width: 100, height: 60, srcWidth: 479, srcHeight: 296, score: 1},
 ];
 
 /**
@@ -129,6 +137,10 @@ export class Sea {
 			parent: parent,
 			name: fishInfoList[fishIdx].name,
 			resourceName: fishInfoList[fishIdx].resourceName,
+			width: fishInfoList[fishIdx].width,
+			height: fishInfoList[fishIdx].height,
+			srcWidth: fishInfoList[fishIdx].srcWidth,
+			srcHeight: fishInfoList[fishIdx].srcHeight,
 			score: fishInfoList[fishIdx].score,
 			swimmingStyle: {
 				pattern: pattern,

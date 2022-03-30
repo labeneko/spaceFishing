@@ -104,7 +104,6 @@ export class FishingRod {
 		let pattern: FishingPattern = "Default";
 		capturedFishList.forEach(fish => {
 			if (pattern !== "Default") return;
-			console.log(fish.name);
 			switch (fish.name){
 				case "くらげ":
 					pattern = "Stuck";
