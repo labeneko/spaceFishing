@@ -216,6 +216,12 @@
 			"type": "script",
 			"path": "script/TimeOver.js",
 			"global": true
+		},
+		"rocket": {
+			"type": "image",
+			"path": "image/rocket.png",
+			"width": 479,
+			"height": 296
 		}
 	},
 	"moduleMainScripts": {

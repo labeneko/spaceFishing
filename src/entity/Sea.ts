@@ -12,6 +12,11 @@ interface FishInfo {
 	readonly name: string;
 
 	/**
+	 * 画像の名前
+	 */
+	readonly resourceName: string
+
+	/**
 	 * 獲得できるスコア
 	 */
 	readonly score: number;
@@ -21,8 +26,7 @@ interface FishInfo {
  * 出現する魚の種類
  */
 const fishInfoList: FishInfo[] = [
-	{name: "さかな", score: 1},
-	{name: "くらげ", score: 0}
+	{name: "ロケット", resourceName: "rocket", score: 1},
 ];
 
 /**
@@ -124,6 +128,7 @@ export class Sea {
 		return new Fish({
 			parent: parent,
 			name: fishInfoList[fishIdx].name,
+			resourceName: fishInfoList[fishIdx].resourceName,
 			score: fishInfoList[fishIdx].score,
 			swimmingStyle: {
 				pattern: pattern,

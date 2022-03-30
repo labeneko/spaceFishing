@@ -16,6 +16,10 @@ export interface FishParameterObject {
 	 */
 	readonly name: string;
 	/**
+	 * 魚のリソース名(文字列)
+	 */
+	 readonly resourceName: string;
+	/**
 	 * 魚を釣ったときのスコア
 	 */
 	readonly score: number;
@@ -48,9 +52,10 @@ export interface SwimmingStyle {
  */
 export class Fish {
 	private _parent: g.E;
-	private _label: g.Label;
+	private _sprite: g.Sprite;
 	private _score: number;
 	private _swimmingStyle: SwimmingStyle;
+	private _name: string;
 
 	/**
 	 * 泳ぐアニメーション用の Tween
@@ -63,11 +68,12 @@ export class Fish {
 
 	constructor(param: FishParameterObject) {
 		this._parent = param.parent;
-		this._label = this._createLabel(param);
-		this._parent.append(this._label);
+		this._sprite = this._createSprite(param);
+		this._parent.append(this._sprite);
 		this._isCaptured = false;
 		this._score = param.score;
 		this._swimmingStyle = param.swimmingStyle;
+		this._name = param.name;
 	}
 
 	get isCaptured(): boolean {
@@ -75,7 +81,7 @@ export class Fish {
 	}
 
 	get name(): string {
-		return this._label.text;
+		return this._name;
 	}
 
 	get score(): number {
@@ -87,24 +93,24 @@ export class Fish {
 	 */
 	get area(): g.CommonArea {
 		return {
-			width: this._label.width,
-			height: this._label.height,
-			x: this._label.x,
-			y: this._label.y
+			width: this._sprite.width,
+			height: this._sprite.height,
+			x: this._sprite.x,
+			y: this._sprite.y
 		};
 	}
 
 	destroy(): void {
-		this._label.destroy();
+		this._sprite.destroy();
 	}
 
 	/**
 	 * 釣られる
 	 */
 	followHook(fishingRod: FishingRod): void {
-		this._label.update.add(() => {
-			this._label.y = Math.min(fishingRod.hookArea.y, this._label.y);
-			this._label.modified();
+		this._sprite.update.add(() => {
+			this._sprite.y = Math.min(fishingRod.hookArea.y, this._sprite.y);
+			this._sprite.modified();
 		});
 	}
 
@@ -113,14 +119,14 @@ export class Fish {
 	 */
 	swim(): void {
 		const timeline = getResources().timeline;
-		const toX = this._label.x < g.game.width / 2 ? g.game.width : -this._label.width;
+		const toX = this._sprite.x < g.game.width / 2 ? g.game.width : -this._sprite.width;
 		if (this._swimTween) {
 			timeline.remove(this._swimTween);
 		}
 		this._swimTween = timeline
-			.create(this._label)
-			.moveTo(toX, this._label.y, this._swimmingStyle.swimTime)
-			.call(() => this._label.destroy());
+			.create(this._sprite)
+			.moveTo(toX, this._sprite.y, this._swimmingStyle.swimTime)
+			.call(() => this._sprite.destroy());
 	}
 
 	/**
@@ -137,12 +143,10 @@ export class Fish {
 	/**
 	 * 魚ラベル作成
 	 */
-	private _createLabel(param: FishParameterObject): g.Label {
-		return new g.Label({
+	private _createSprite(param: FishParameterObject): g.Sprite {
+		return new g.Sprite({
 			scene: param.parent.scene,
-			text: param.name,
-			font: getResources().font,
-			fontSize: FISH_FONT_SIZE,
+			src: param.parent.scene.assets[param.resourceName],
 			...this._initialPos(param)
 		});
 	}

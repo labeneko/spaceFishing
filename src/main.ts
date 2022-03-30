@@ -9,7 +9,8 @@ import { TitleScene } from "./TitleScene";
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({game: g.game, assetIds: [
 		"ui_common", "jin_000", "glyph28", "glyph72", "glyph32_yellow", "bg", "kaizokusen",
-		"bgm_130", "se_002c", "title", "se_005A_mono", "se_006B_mono"
+		"bgm_130", "se_002c", "title", "se_005A_mono", "se_006B_mono",
+		"rocket"
 	]});
 	Global.init();
 	
