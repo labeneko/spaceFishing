@@ -240,6 +240,12 @@
 			"path": "image/kurage.png",
 			"width": 400,
 			"height": 381
+		},
+		"readygo_tsuno": {
+			"type": "audio",
+			"path": "audio/readygo_tsuno",
+			"systemId": "sound",
+			"duration": 1579
 		}
 	},
 	"moduleMainScripts": {

@@ -12,14 +12,13 @@ export class TitleScene extends AStage {
 	}
 
 	activate(_s: g.Scene): void {
-		AudioPresenter.instance.playBGM("bgm_130");
 		const s = new g.Sprite({
 			scene: _s,
 			src: _s.assets["title"],
 			width: g.game.width,
 			height: g.game.height,
 		});
-
+		this.title = s;
 
 		let ap = null;
 		_s.setTimeout(
@@ -36,8 +35,6 @@ export class TitleScene extends AStage {
 			},
 			5000
 		);
-
-		this.title = s;
 		_s.append(s);
 		this.scene = _s;
 	}

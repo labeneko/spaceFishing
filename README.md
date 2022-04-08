@@ -6,8 +6,20 @@
 # github actionsへの出力
 
 ```
-akashic export html --magnify --minify --bundle --output docs/game
+rm -rf docs/game && akashic export html --magnify --minify --bundle --output docs/game
 ```
+
+# ゲームアツマールへの出力
+
+```
+rm -rf game.zip && akashic export html --atsumaru --output ./game.zip
+```
+
+# 音声収録・利用の方法
+1. iPhoneのボイスレコーダーアプリで音声を収録(m4a形式)
+1. https://convertio.co/ja/ にアクセスし、m4a形式のファイルをアップロード。ogg形式とaac形式に変換する
+1. ogg形式とaac形式の2ファイルをダウンロードし、audio下に保存
+1. `akashic scan asset` を実行し、音声を `game.json` に登録
 
 ## 実行方法
 

@@ -34,7 +34,7 @@ export class ReadyGo {
 	}
 
 	show(): ReadyGo {
-		AudioPresenter.instance.playSE("se_005A_mono");
+		AudioPresenter.instance.playSE("readygo_tsuno");
 		this.ready.show();
 		this.fadeAction(
 			this._s,

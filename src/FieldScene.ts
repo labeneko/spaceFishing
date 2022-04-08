@@ -129,7 +129,6 @@ export class FieldScene extends AStage {
 					}
 				}
 			);
-
 		AudioPresenter.instance.playBGM("bgm_130");
 	}
 
